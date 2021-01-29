@@ -1,12 +1,22 @@
 const inquirer = require("inquirer");
 
-const Employee = require("./lib/Employee");
-const Engineer = require("./lib/Engineer");
+const Employee = require("./lib/employee");
+const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const Manager = require("./lib/manager");
 
 const fs = require("fs");
 
+function addEmployee() {
+    const promptArray = [{
+        type: "list",
+        message: "Would you like to stop the program? (Select 'No' if you just started.) Note: This program can only hold 8 Employees",
+        choices: ["Yes", "No"],
+        name: "stop"
+    }];
+
+    return inquirer.prompt(promptArray);
+}
 
 function runInquirer() {
     const promptArray = [{
@@ -28,8 +38,7 @@ function runInquirer() {
         name: "title"
     }];
 
-    return inquirer
-        .prompt(promptArray);
+    return inquirer.prompt(promptArray);
 }
 
 function runInquirerManager() {
@@ -65,37 +74,36 @@ function runInquirerIntern() {
         .prompt(promptArray);
 }
 
-
 async function run() {
     let employeeArray = [];
     const maxTimes = 4;
     for (i = 0; i < maxTimes; i++) {
         const promise = new Promise((resolve, reject) => {
             runInquirer()
-                .then(function ({ name, id, email, title }) {
+                .then(function ({ stop, name, id, email, title }) {
 
                     if (title === "Manager") {
                         runInquirerManager().then(function ({ officeNumber }) {
                             this.employee = new Manager(name, id, email, officeNumber, title);
-                            console.log(officeNumber);
                             employeeArray.push(employee);
-                            resolve("done");
+                            resolve("Done.");
                         });
 
                     } else if (title === "Engineer") {
                         runInquirerEngineer().then(function ({ github }) {
                             this.employee = new Engineer(name, id, email, github, title);
-                            console.log(github);
                             employeeArray.push(employee);
-                            resolve("done");
+                            resolve("Done.");
                         });
                     } else if (title === "Intern") {
                         runInquirerIntern().then(function ({ school }) {
                             this.employee = new Intern(name, id, email, school, title);
-                            console.log(school);
                             employeeArray.push(employee);
-                            resolve("done");
+                            resolve("Done.");
                         });
+                    } else if (stop === "Yes") {
+                        i = maxTimes;
+                        resolve("End Program");
                     }
 
                 }).catch(function (err) {
@@ -105,10 +113,7 @@ async function run() {
         });
 
         const result = await promise;
-        console.log(result);
-    }
-
-    // console.log(employeeArray.length);
+    };
 
     function displayTitle(employee) {
         if (employee.title === "Manager") {
@@ -204,7 +209,7 @@ async function run() {
 
     console.log(html);
     const fs = require("fs");
-    fs.writeFile('newfile.html', html, function (err) {
+    fs.writeFile('./dist/sample.html', html, function (err) {
         if (err) throw err;
         console.log('File is created successfully.');
     });
