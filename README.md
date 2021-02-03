@@ -30,13 +30,14 @@ ____________________________________________
 ### Installation
  
 To install, download or clone the repository into your own folder. <br> 
-Once in your folder, open the package.json in the terminal and download all dependinces by using the command `npm i`
+<br>
+Once in your folder, open the package.json in the terminal and <br> download all dependinces by using the command `npm i`
  
 ____________________________________________
 
 ### Usage
  
-To run the program, open index.js in the terminal and run the file with the command `node index.js`. <br> 
+To run the program, open index.js in the terminal and run the file with the command `node index.js`. <br> <br>
 Answer the questions for each employee and when prompted to stop the program, select "No" to continue or "Yes" to stop the program and generate the website. <br>
 
 ____________________________________________
