@@ -119,15 +119,15 @@ function generateHTML() {
 
 function displayTitle(employee) {
     if (employee.title === "Manager") {
-        return `office number: ${employee.officenum}`;
+        return `Office Number: ${employee.officenum}`;
     }
 
     if (employee.title === "Intern") {
-        return `school: ${employee.school}`;
+        return `School: ${employee.school}`;
     }
 
     if (employee.title === "Engineer") {
-        return `gitHub: ${employee.github}`;
+        return `GitHub: ${employee.github}`;
     }
 
 }
