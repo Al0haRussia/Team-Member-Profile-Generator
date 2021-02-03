@@ -39,6 +39,8 @@ ____________________________________________
  
 To run the program, open index.js in the terminal and run the file with the command `node index.js`. <br> <br>
 Answer the questions for each employee and when prompted to stop the program, select "No" to continue or "Yes" to stop the program and generate the website. <br>
+<br>
+You can also follow this walkthrough: https://drive.google.com/file/d/1MHdAYZbe0sMc1wQ21h4d2GYjtsDY6Kh_/view?usp=sharing
 
 ____________________________________________
  
