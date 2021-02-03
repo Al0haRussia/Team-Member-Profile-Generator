@@ -6,6 +6,18 @@ const Intern = require("./lib/intern");
 const Manager = require("./lib/manager");
 
 const fs = require("fs");
+const { off } = require("process");
+
+function addEmployee() {
+    const promptArray = [{
+        type: "list",
+        message: "Would you like to stop the program or add an employee?",
+        choices: ["Add Employee", "Stop Program"],
+        name: "stop"
+    }];
+
+    return inquirer.prompt(promptArray);
+}
 
 
 function runInquirer() {
@@ -26,11 +38,6 @@ function runInquirer() {
         message: "What is your title",
         choices: ["Manager", "Engineer", "Intern"],
         name: "title"
-    } , {
-        type: "list",
-        message: "Would you like to stop the program? (Select 'No' if you just started.) Note: This program can only hold 8 Employees",
-        choices: ["Yes", "No"],
-        name: "stop"
     }];
 
     return inquirer.prompt(promptArray);
@@ -40,7 +47,7 @@ function runInquirerManager() {
     const promptArray = [{
         type: "input",
         message: "What is your office number?",
-        name: "officeNumber"
+        name: "officenum"
     }];
 
     return inquirer
@@ -72,49 +79,47 @@ function runInquirerIntern() {
 let employeeArray = [];
 
 function run() {
-    runInquirer().then(function ({ stop, name, id, email, title }) {
+    addEmployee().then(function ({ stop }) {
+        if (stop == "Add Employee") {
+            runInquirer().then(function ({ name, id, email, title }) {
 
-        if (stop == "No" && title == "Manager") {
-            runInquirerManager().then(function ({ officeNumber }) {
-                this.employee = new Manager(name, id, email, officeNumber, title);
-                console.log(officeNumber);
-                employeeArray.push(employee);
-                console.log("Employee Added");
-                run();
-            });
-
-        } else if (stop == "No" && title == "Engineer") {
-            runInquirerEngineer().then(function ({ github }) {
-                this.employee = new Engineer(name, id, email, github, title);
-                employeeArray.push(employee);
-                console.log("Employee Added");
-                run();
-            });
-
-        } else if (stop == "No" && title == "Intern") {
-            runInquirerIntern().then(function ({ school }) {
-                this.employee = new Intern(name, id, email, school, title);
-                employeeArray.push(employee);
-                console.log("Employee Added");
-                run();
+                if (title == "Manager") {
+                    runInquirerManager().then(function ({ officenum }) {
+                        this.employee = new Manager(name, id, email, officenum, title);
+                        employeeArray.push(employee);
+                        console.log("Employee Added");
+                        run();
+                    });
+        
+                } else if (title == "Engineer") {
+                    runInquirerEngineer().then(function ({ github }) {
+                        this.employee = new Engineer(name, id, email, github, title);
+                        employeeArray.push(employee);
+                        console.log("Employee Added");
+                        run();
+                    });
+        
+                } else if (title == "Intern") {
+                    runInquirerIntern().then(function ({ school }) {
+                        this.employee = new Intern(name, id, email, school, title);
+                        employeeArray.push(employee);
+                        console.log("Employee Added");
+                        run();
+                    });
+                }
             });
         } else {
-            console.log("Program ended")
+            console.log("Program Ended");
             generateHTML();
         }
-
-        }).catch(function (err) {
-            console.log("There was an error.");
-            console.log(err);
-        });
+    });
 }
 
 function generateHTML() {
 
 function displayTitle(employee) {
     if (employee.title === "Manager") {
-        console.log(employee.officeNumber);
-        return `office number: ${employee.officeNumber}`;
+        return `office number: ${employee.officenum}`;
     }
 
     if (employee.title === "Intern") {
@@ -129,7 +134,6 @@ function displayTitle(employee) {
 function getCardHtml() {
     let html = "";
     for (i = 0; i < employeeArray.length; i++) {
-        console.log(employeeArray[i])
         html += `<div class="card bg-dark justify-content-center align-items-center" style="width: 18rem;">
             <div class="col card-header">
                 <h4>${employeeArray[i].name}</h4>
